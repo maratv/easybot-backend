@@ -94,28 +94,21 @@ public class StoreServiceImpl implements StoreService {
                         : laptop.getLaptopSize());
             }
 
-//            if (device instanceof Desktop) {
-//                Desktop desktop = (Desktop) device;
-//                DesktopDto desktopDto = (DesktopDto) deviceDto;
-//                desktop.setDesktopFormFactor(desktopDto.getDesktopFormFactor() != null
-//                        ? desktopDto.getDesktopFormFactor()
-//                        : desktop.getDesktopFormFactor());
-//
-//            }
+            if (device instanceof Display display) {
+                DisplayDto displayDto = request.getDisplayDto();
+                updateDeviceBaseFields(device, displayDto);
+                display.setDiagonal(displayDto.getDiagonal() != null
+                        ? displayDto.getDiagonal()
+                        : display.getDiagonal());
+            }
 
-//            else if (device instanceof Display display) {
-//                DisplayDto displayDto = (DisplayDto) deviceDto;
-//                display.setDiagonal(displayDto.getDiagonal() != null
-//                        ? displayDto.getDiagonal()
-//                        : display.getDiagonal());
-//            }
-
-//            if (device instanceof Laptop) {
-//                ((Laptop) device).setLaptopSize(deviceDto.getLaptopSize() != null
-//                        ? deviceDto.getLaptopSize()
-//                        : ((Laptop) device).getLaptopSize());
-//            }
-
+            if (device instanceof Storage storage) {
+                StorageDto storageDto = request.getStorageDto();
+                updateDeviceBaseFields(device, storageDto);
+                storage.setStorageSize(storageDto.getStorageSize() != null
+                        ? storageDto.getStorageSize()
+                        : storage.getStorageSize());
+            }
 
             return Optional.of(deviceRepository.save(device));
         }
@@ -131,15 +124,12 @@ public class StoreServiceImpl implements StoreService {
         device.setPrice(deviceDto.getPrice() != null ? deviceDto.getPrice() : device.getPrice());
         device.setAmount(deviceDto.getAmount() != null ? deviceDto.getAmount() : device.getAmount());
 
-
-        //  return device;
     }
 
     @Override
     public Optional<Device> deleteDevice(Long id) {
         Optional<Device> optionalDevice = deviceRepository.findById(id);
-        optionalDevice.ifPresent(device -> deviceRepository.delete(device));
+        optionalDevice.ifPresent(deviceRepository::delete);
         return optionalDevice;
-
     }
 }

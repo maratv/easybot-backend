@@ -41,7 +41,7 @@ public class StoreController {
         Optional<Device> optionalDevice = storeService.updateDevice(id, request);
         return optionalDevice
                 .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(() -> new ResourceNotFoundException("Device with Id # '" + id + "' not found"));
     }
 
     @DeleteMapping("/{id}")
@@ -102,6 +102,4 @@ public class StoreController {
     public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
-
-
 }

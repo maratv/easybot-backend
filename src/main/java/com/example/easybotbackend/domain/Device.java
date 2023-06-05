@@ -1,6 +1,5 @@
 package com.example.easybotbackend.domain;
 
-import com.example.easybotbackend.dto.DeviceDto;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
